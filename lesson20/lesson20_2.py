@@ -27,9 +27,13 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    response = model.generate_content(event.message.text)
-    message = TextSendMessage(text=response.text)
-    line_bot_api.reply_message(event.reply_token, message)
+    try:
+        response = model.generate_content(event.message.text)
+        message = TextSendMessage(text=response.text)
+        line_bot_api.reply_message(event.reply_token, message)
+    except:
+        message = TextSendMessage(text="發生不明錯誤！請稍等")
+        line_bot_api.reply_message(event.reply_token, message)
 
 import os
 if __name__ == "__main__":
